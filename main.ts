@@ -7,7 +7,6 @@ controller.up.onEvent(ControllerButtonEvent.Released, function () {
 })
 function checkChoice () {
     if (choice == arrowList.shift()) {
-        points += 1
         console.log(arrowList)
         if (arrowList.length == 0) {
             Level_Over()
@@ -37,7 +36,6 @@ controller.down.onEvent(ControllerButtonEvent.Released, function () {
 })
 function Level_Over () {
     answerOn = 0
-    music.stopAllSounds()
     mySprite.setImage(img`
 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . 
@@ -58,8 +56,9 @@ function Level_Over () {
 `)
     Timer = (game.runtime() - Start_time) / 1000
     list.push(points)
+    game.splash("" + points + " " + "correct answers")
+    game.splash("" + Timer + " " + "seconds")
     game.splash("" + Math.round(points / Timer * 100) + " " + "points")
-    whichLevel += 1
 }
 controller.right.onEvent(ControllerButtonEvent.Released, function () {
     if (answerOn == 1) {
@@ -96,7 +95,6 @@ function BaseLineLevel () {
         pause(100)
     }
     console.log(arrowList)
-    points = 0
     game.showLongText("Use the keypad to recreate the pattern", DialogLayout.Center)
     answerOn = 1
     Start_time = game.runtime()
@@ -111,6 +109,7 @@ let arrowList: number[] = []
 let list: number[] = []
 let arrows: Image[] = []
 let mySprite: Sprite = null
+let whichLevel = 0
 let Score = 0
 scene.setBackgroundColor(9)
 mySprite = sprites.create(img`
@@ -202,8 +201,7 @@ arrows = [img`
 `]
 list = []
 arrowList = []
-points = 0
+points = 7
 Timer = 0
-let whichLevel = 0
 answerOn = 0
 BaseLineLevel()
